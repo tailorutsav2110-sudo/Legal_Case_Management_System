@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>admin_cases</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>All Cases (Admin)</strong>
+        <div>
+            <a href="/add_case">Add Case</a> |
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="search-container">
+        <form action="/search_case" method="get">
+            <input type="text" name="title" placeholder="Search case by Title,Client,Status" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Lawyer</th>
+            <th>Action</th>
+            <th>Hearing</th>
+            <th>Document</th>
+        </tr>
+
+        {% for case in cases %}
+        <tr>
+            <td>{{ case.title }}</td>
+            <td>{{ case.client }}</td>
+            <td>{{ case.description }}</td>
+            <td>{{ case.status }}</td>
+            <td>
+                {% for lawyer in lawyers %}
+                {% if lawyer._id == case.lawyer_id %}
+                {{ lawyer.name }}
+                {% endif %}
+                {% endfor %}
+            </td>
+
+            <td>
+                <a class="check-link" href="{{ url_for('admin.admin_edit_case', id=case._id) }}">Edit</a>
+                <a class="check-link" href="{{ url_for('admin.admin_delete_case', id=case._id) }}"
+                    onclick="return confirm('Delete this case?')">Delete</a>
+            </td>
+            <td>
+                <a class="check-link" href="{{ url_for('hearing.add_hearing', case_id=case._id) }}">Add</a>
+                <a class="check-link" href="{{ url_for('hearing.view_hearing', case_id=case._id) }}">View</a>
+            </td>
+            <td>
+                <a class="check-link" href="{{ url_for('document.view_documents', case_id=case._id) }}">Manage
+                    Documents</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>

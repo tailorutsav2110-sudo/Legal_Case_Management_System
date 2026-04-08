@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+}
+
+/* 🔵 Navbar (same as home) */
+.navbar {
+    background: #1e2f4f;
+    color: white;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.navbar .btn {
+    background: #3b82f6;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+/* 🔥 About Section */
+.about-container {
+    max-width: 900px;
+    margin: 60px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Heading */
+.about-container h1 {
+    color: #1e2f4f;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Paragraph */
+.about-container p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* ✨ Hover effect (optional premium look) */
+.about-container:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔵 Navbar -->
+<div class="navbar">
+    <div class="logo">⚖️ LCMS</div>
+    <div>
+        <a href="{{ url_for('auth.home') }}">Home</a>
+        <a href="{{ url_for('auth.about') }}">About</a>
+        <a href="{{ url_for('auth.contact') }}">Contact</a>
+        <a href="{{ url_for('auth.login') }}" class="btn">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn">Register</a>
+    </div>
+</div>
+
+<!-- 🔥 About Content -->
+<div class="about-container">
+    <h1>About Legal Case Management System</h1>
+
+    <p>
+       • The Legal Case Management System (LCMS) is designed to help lawyers,
+          clients, and administrators efficiently manage legal cases.
+    </p>
+
+    <p>
+        • It provides features like case tracking, document management,
+           hearing scheduling, and communication between clients and lawyers.
+    </p>
+
+    <p>
+        • This system improves productivity and ensures better organization
+           of legal data.
+    </p>
+</div>
+
+</body>
+</html>

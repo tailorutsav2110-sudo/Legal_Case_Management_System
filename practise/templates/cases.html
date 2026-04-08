@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cases</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Case Details</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/add_case">Add New Case</a> | <a href="/admin_dashboard">Dashboard</a><br><br>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="search-container">
+        <form method="GET" action="/search_case">
+            <input type="text" name="title" placeholder="Search by TitleId" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Lawyer</th>
+            <th>Hearing</th>
+            <th>Actions</th>
+        </tr>
+        {% for case in cases %}
+        <tr>
+            <td>{{ case.title }}</td>
+            <td>
+                <a href="{{ url_for('cases.my_client', case_id=case._id) }}">
+                    {{ case.client }}
+                </a>
+            </td>
+            <td>{{ case.description }}</td>
+            <td>{{ case.status }}</td>
+            <td>
+                {% for lawyer in lawyers %}
+                {% if lawyer._id == case.lawyer_id %}
+                {{ lawyer.name }}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                <a class="check-link" href="/add_hearing/{{ case._id }}">Add </a>
+                <a class="check-link" href="/hearings/{{ case._id }}">View </a>
+            </td>
+
+            <td>
+                <a class="check-link" href="/edit_case/{{ case._id }}">Edit</a>
+
+                {% if session.role in ["admin", "lawyer"] %}
+                <a class="check-link" href="/view/{{ case._id }}">Manage Documents</a>
+                {% endif %}
+
+                {% if session.role == "client" %}
+                <a class="check-link" href="/view/{{ case._id }}">Upload Documents</a>
+                {% endif %}
+
+                {% if session.role == "admin" %}
+                <a class="check-link" href="/admin/delete_cases/{{ case._id }}"
+                    onclick="return confirm('Are you sure you want to delete this case?')">Delete</a>
+                {% else %}
+                <a class="check-link" href="/delete_case/{{ case._id }}"
+                    onclick="return confirm('Are you sure you want to delete this case?')">Delete</a>
+                {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

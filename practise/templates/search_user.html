@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search_user</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>
+            <strong>User Details</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin/users">Back to User List</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    {% if error %}
+    <div class="error-msg" id="errorMsg">{{ error }}</div>
+    {% endif %}
+
+    {% if users %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    {% if user.role == "lawyer" %}
+                    <a href="{{ url_for('cases.lawyer_profile', id=user._id) }}">{{ user.name }}</a>
+                    {% elif user.role == "admin" %}
+                    <a href="{{ url_for('admin.admin_profile', id=user._id) }}">{{ user.name }}</a>
+                    {% elif user.role == "client" %}
+                    <a href="{{ url_for('client.client_profile', id=user._id) }}">{{ user.name }}</a>
+                    {% elif user.role == "staff" %}
+                    <a href="{{ url_for('staff.staff_profile', id=user._id) }}">{{ user.name }}</a>
+                    {% else %}
+                    {{ user.name }}
+                    {% endif %}
+                </td>
+
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% elif not error %}
+    <p style="text-align:center;">No users found.</p>
+    {% endif %}
+
+</body>
+
+</html>

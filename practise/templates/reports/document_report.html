@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document_report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>document_report</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <h3>Document Summary</h3>
+
+        <p><strong>Total Documents:</strong> {{ documents|length }}</p>
+        <p>
+            <strong>Uploaded Documents:</strong> {{ uploaded_count }} |
+            <strong>Pending Documents:</strong> {{ not_uploaded_count }}
+        </p>
+
+        <br>
+
+        <a href="/reports/documents/pdf" target="_blank">
+            <button>Export to PDF</button>
+        </a>
+
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Doc ID</th>
+                <th>Case ID</th>
+                <th>Document Name</th>
+                <th>Uploaded By</th>
+                <th>Status</th>
+            </tr>
+
+            {% for doc in documents %}
+            <tr>
+                <td>{{ doc._id_short }}</td>
+                <td>{{ doc.case_id_short }}</td>
+                <td>{{ doc.doc_name or 'N/A' }}</td>
+                <td>{{ doc.uploaded_by or doc.requested_by or 'N/A' }}</td>
+                <td>{{ doc.status or 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

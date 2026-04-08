@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add_hearing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Add_Hearing</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/cases">Back to Cases</a> | <a href="/dashboard">Dashboard</a><br><br>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <form method="post" onsubmit="return validatehearingform()">
+
+            <label>Hearing Date</label>
+            <input type="date" name="hearing_date" id="hearing_date" oninput="hideError()">
+
+            <label>Hearing Time</label>
+            <input type="time" name="hearing_time" id="hearing_time" oninput="hideError()">
+
+            <label>Judge Name</label>
+            <input type="text" name="judge_name" placeholder="Enter Judge Name" id="judge_name" oninput="hideError()">
+
+            <label>Court Room</label>
+            <input type="text" name="court_room" placeholder="Court Room No" id="court_room" oninput="hideError()">
+
+            <label>Remarks</label>
+            <textarea name="remarks" placeholder="Remarks" id="remarks" oninput="hideError()"></textarea>
+
+            {% if session['role'] == 'admin' %}
+            <label>Assign Lawyer:</label>
+            <select name="lawyer_id" oninput="hideError()" required>
+                <option value="">--Select Lawyer--</option>
+                {% for lawyer in lawyer_options %}
+                <option value="{{ lawyer.id }}">{{ lawyer.name }}</option>
+                {% endfor %}
+            </select>
+            {% elif session['role'] == 'lawyer' %}
+            <label>Lawyer:</label>
+            <input type="text" value="{{ case.lawyer_name }}" readonly>
+            {% endif %}
+
+            <div id="errorMsg" class="error-msg" style="display:none;"></div>
+
+            <button type="submit">Save Hearing</button>
+        </form>
+    </div>
+</body>
+<script>
+    function hideError() {
+        let errorDiv = document.getElementById("errorMsg");
+        if (errorDiv) errorDiv.style.display = "none";
+    }
+    function validatehearingform() {
+        let date = document.getElementById("hearing_date").value;
+        let time = document.getElementById("hearing_time").value;
+        let judge = document.getElementById("judge_name").value.trim();
+        let court = document.getElementById("court_room").value.trim();
+        let remarks = document.getElementById("remarks").value.trim();
+
+        if (!date) {
+            showError("Please select Hearing Date");
+            return false;
+        }
+
+        if (!time) {
+            showError("Please select Hearing Time");
+            return false;
+        }
+
+        let judgePattern = /^[A-Za-z ]{3,}$/;
+        if (!judgePattern.test(judge)) {
+            showError("Enter valid Judge Name (at least 3 letters)");
+            return false;
+        }
+
+        let courtPattern = /^[A-Za-z0-9 ]+$/;
+        if (!courtPattern.test(court) || court.length < 1) {
+            showError("Enter valid Court Room (letters, numbers allowed)");
+            return false;
+        }
+
+        if (remarks && remarks.length < 5) {
+            showError("Remarks must be at least 5 characters if provided");
+            return false;
+        }
+
+        return true;
+    }
+
+    function showError(msg) {
+        let errorDiv = document.getElementById("errorMsg");
+        errorDiv.innerText = msg;
+        errorDiv.style.display = "block";
+    }
+</script>
+
+</html>

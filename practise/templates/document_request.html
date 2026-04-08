@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document_request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Request Document</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/view/{{ case_id }}">Back</a> |
+            <a href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <form method="POST">
+            <label>Document Name</label>
+            <input type="text" name="doc_name" placeholder="Eg: Aadhaar, PAN, Agreement" required>
+
+            <button type="submit">Request Document</button>
+        </form>
+    </div>
+</body>
+</html>

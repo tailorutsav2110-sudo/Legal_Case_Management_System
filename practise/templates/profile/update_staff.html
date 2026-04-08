@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update_staff</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>Update Profile</strong>
+        <div class="nav-right">
+            <a href="/staff/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="POST" action="{{ url_for('staff.update_staff_profile', id=staff['_id']) }}" class="auth-form">
+
+        <label>Email:</label>
+        <input type="text" name="name" value="{{ staff.email }}" required><br>
+
+        <label>Phone:</label>
+        <input type="text" name="phone" value="{{ staff.phone or '' }}"><br>
+
+        <button type="submit">💾 Save Changes</button>
+    </form>
+
+</body>
+
+</html>

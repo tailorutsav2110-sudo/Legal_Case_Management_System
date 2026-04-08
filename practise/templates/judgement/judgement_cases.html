@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>judgement_cases</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>Judgement Management</strong>
+        <div>
+            <!-- <a href="/view_judgements">View Judgements</a> | -->
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Lawyer</th>
+            <th>Action</th>
+        </tr>
+
+        {% for case in cases %}
+        <tr>
+            <td>{{ case.title }}</td>
+            <td>{{ case.client }}</td>
+            <td>{{ case.description }}</td>
+            <td>{{ case.status }}</td>
+
+            <td>
+                {% for lawyer in lawyers %}
+                {% if lawyer._id == case.lawyer_id %}
+                {{ lawyer.name }}
+                {% endif %}
+                {% endfor %}
+            </td>
+
+            <td>
+                {% if case.has_judgement %}
+                <span style="color: green;">✔ Judgement Added</span> |
+                <a href="/view_judgement/{{ case._id }}">View</a> |
+                <a href="/delete_judgement/{{ case.judgement_id }}"
+                    onclick="return confirm('Are you sure you want to delete this Judgement?')">
+                    Delete
+                </a>
+                {% else %}
+                <a href="/add_judgement/{{ case._id }}">Add</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>staff_profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>My Profile</strong>
+        <div class="nav-right">
+            <a href="/staff/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="auth-form">
+
+        <h2 style="text-align:center;">👤 Staff Details</h2>
+        <br>
+
+        <table width="100%" border="1">
+            <tr>
+                <th>Name</th>
+                <td>{{ staff.name }}</td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td>{{ staff.email }}</td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td>{{ staff.phone or 'N/A' }}</td>
+            </tr>
+
+            <tr>
+                <th>Role</th>
+                <td>{{ staff.role }}</td>
+            </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>

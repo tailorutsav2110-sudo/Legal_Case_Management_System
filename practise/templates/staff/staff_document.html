@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>staff_documents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>All Documents</strong>
+        <div class="nav-right">
+            <a href="/staff/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Case ID </th>
+                <th>Document Name </th>
+                <th>Status </th>
+                <th>Requested By </th>
+                <th>Uploaded By </th>
+                <th>File </th>
+                <th>View </th>
+            </tr>
+
+            {% for d in documents %}
+            <tr>
+                <td>{{ d.case_id[:5] }}</td>
+
+                <td>{{ d.doc_name }}</td>
+                <td>{{ d.status }}</td>
+                <td>{{ d.requested_by }}</td>
+                <td>{{ d.uploaded_by }}</td>
+
+                <td>{{ d.file }}</td>
+
+                <td>
+                    {% if d.file %}
+                    <a href="{{ url_for('document.uploaded_file', filename=d.file) }}">View</a>
+                    {% else %}
+                    <span style="color:gray;">No File</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

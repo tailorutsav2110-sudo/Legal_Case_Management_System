@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>client_dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Client Dashboard</strong>
+        </div>
+
+        <div class="nav-right">
+            <div class="bell" onclick="toggleNotifications()">
+                🔔
+                {% if unread_count > 0 %}
+                <span class="badge">{{ unread_count }}</span>
+                {% endif %}
+
+                <div id="notificationBox">
+                    {% for n in notifications if n.status == "unread" %}
+                    <div class="notification-item unread">
+                        <p class="msg">{{ n.message }}</p>
+                        <a href="/mark_read/{{ n._id }}">Mark as read</a>
+                    </div>
+                    {% else %}
+                    <div class="empty">No new notifications</div>
+                    {% endfor %}
+
+                    <div class="view-all">
+                        <a href="/view_notifications">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url_for('client.client_profile', id=session['user_id']) }}" class="profile-icon">🧑</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="container">
+        <h2>Your Cases</h2>
+
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Lawyer</th>
+                <th>Status</th>
+                <th>Hearings</th>
+                <th>Action</th>
+                <th>Judgement</th>
+            </tr>
+
+            {% for case in cases %}
+            <tr>
+                <td>{{ case.title }}</td>
+                <td>
+                    {% if case['lawyer_id'] %}
+                    <a href="{{ url_for('client.my_lawyer', case_id=case['_id']) }}">
+                        {{ case['lawyer_name'] }}
+                    </a>
+                    {% else %}
+                    Not Assigned
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="status {{ case.status }}">
+                        {{ case.status }}
+                    </span>
+                </td>
+
+                <td>
+                    <a class="check-link" href="/client_case/{{ case._id }}/hearings">View</a>
+                </td>
+
+                <td>
+                    <a class="check-link" href="/client_case/{{ case._id }}">Details</a>
+                    <a class="check-link" href="/view/{{ case['_id'] }}">Documents</a>
+                </td>
+
+                <td>
+                    {% if case.has_judgement %}
+                    <a class="check-link" href="/view_judgement/{{ case._id }}"> View Judgement</a>
+                    {% else %}
+                    <span style="color: gray;">Judgement Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Next Hearing</h2>
+
+        {% for case in cases %}
+        {% if case.next_hearing %}
+        <div class="card">
+            <p><strong>Case:</strong> {{ case.title }} |
+                <strong>Date:</strong> {{ case.next_hearing.hearing_date }} |
+                <strong>Time:</strong> {{ case.next_hearing.hearing_time }} |
+                <strong>Court Room:</strong> {{ case.next_hearing.court_room }} |
+                <strong>Judge:</strong> {{ case.next_hearing.judge_name }}
+            </p>
+        </div>
+        {% else %}
+        <div class="card">
+            <p>No upcoming hearings scheduled for case: {{ case.title }}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</body>
+<script>
+    function toggleNotifications() {
+        const box = document.getElementById("notificationBox");
+        box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("click", function (e) {
+        const bell = document.querySelector(".bell");
+        const box = document.getElementById("notificationBox");
+        if (!bell.contains(e.target)) {
+            box.style.display = "none";
+        }
+    });
+</script>
+
+</html>

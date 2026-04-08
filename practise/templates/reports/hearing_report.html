@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hearing_report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+    <style>
+        .upcoming {
+            background-color: #d4edda;
+            font-weight: bold;
+        }
+
+        .upcoming td {
+            color: #155724;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Hearing Report</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <h3>Hearing Summary</h3>
+
+        <p>
+            <strong>Total Hearings:</strong> {{ hearings|length }} |
+            <strong>Upcoming Hearings:</strong> {{ upcoming_count }}
+        </p>
+
+        <br>
+
+        <a href="/reports/hearings/pdf" target="_blank">
+            <button>Export to PDF</button>
+        </a>
+
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Hearing ID</th>
+                <th>Case ID</th>
+                <th>Lawyer ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Judge</th>
+                <th>Court Room</th>
+                <th>Remarks</th>
+            </tr>
+
+            {% for h in hearings %}
+            <tr class="{% if h.is_upcoming %}upcoming{% endif %}">
+                <td>{{ h._id[:7] }}</td> <!--[:7] for print only 7 characters -->
+                <td>{{ h.case_id[:7] }}</td>
+                <td>{{ h.lawyer_id[:7] }}</td>
+                <td>{{ h.date_str }}</td>
+                <td>{{ h.hearing_time or 'N/A' }}</td>
+                <td>{{ h.judge_name or 'N/A' }}</td>
+                <td>{{ h.court_room or 'N/A' }}</td>
+                <td>{{ h.remarks or '' }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+</body>
+
+</html>

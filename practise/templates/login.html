@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+
+</head>
+
+<body>
+    <div class="navbar">
+    <strong>Login Page</strong>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="post" class="auth-form" onsubmit=" return validateForm()">
+        Email : <input type="email" name="email" placeholder="Enter Email Id" oninput="hideError()"><br>
+        Password : <input type="password" name="password" placeholder="Enter Password" oninput="hideError()"><br>
+        Register as :
+        <select name="role" oninput="hideError()">
+            <option value="">-- Select option --</option>
+            <option value="admin">Admin</option>
+            <option value="lawyer">Lawyer</option>
+            <option value="client">Client</option>
+            <option value="staff">Staff</option>
+        </select><br>
+
+        {% if error %}
+        <div class="error-msg" id="errorMsg">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <button type="submit">Login</button>
+        <p style="text-align:center; margin-top:15px;">
+            New User? <a href="/register">Register</a>
+        </p>
+
+        <p style="text-align:center;">
+    <a href="{{ url_for('auth.home') }}">Back to Home</a>
+</p>
+    </form>
+</body>
+
+<script>
+    function hideError() {
+        let errorDiv = document.getElementById("errorMsg");
+        if (errorDiv) {
+            errorDiv.style.display = "none";
+        }
+    }
+
+    function validateForm() {
+        let email = document.querySelector("input[name='email']").value.trim();
+        let password = document.querySelector("input[name='password']").value.trim();
+        let role = document.querySelector("select[name='role']").value.trim();
+        let errorDiv = document.getElementById("errorMsg");
+
+        if (!email || !password || !role) {
+            errorDiv.innerText = "All fields are required";
+            errorDiv.style.display = "block";
+            return false; // form submit stop karega
+        }
+
+        return true; // form submit allow karega
+    }
+</script>
+
+</html>

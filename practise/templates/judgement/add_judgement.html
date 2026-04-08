@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>add_judgement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div><strong>Add Judgement</strong></div>
+        <div class="nav-right">
+            <a href="/view_judgements">View Judgements</a> |
+            {% if session.role == "admin" %}
+            <a href="/admin_dashboard">Dashboard</a>
+            {% elif session.role == "lawyer" %}
+            <a href="/dashboard">Dashboard</a>
+            {% else %}
+            <a href="/">Dashboard</a>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+
+        <form method="POST">
+            <p><strong>Case Title:</strong> {{ case.title }}</p>
+            <p><strong>Client:</strong> {{ case.client }}</p>
+
+            <label>Judge Name</label>
+            <input type="text" name="judge_name" required>
+
+            <label>Date</label>
+            <input type="date" name="date" required>
+
+            <label>Decision</label>
+            <select name="decision">
+                <option value="In Favor">In Favor</option>
+                <option value="Dismissed">Dismissed</option>
+                <option value="Partially Granted">Partially Granted</option>
+            </select>
+
+            <label>Description</label>
+            <textarea name="description"></textarea>
+
+            <button type="submit">Save Judgement</button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>

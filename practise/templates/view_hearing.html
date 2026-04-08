@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>view_Hearing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+    <style>
+        .upcoming {
+            background-color: #90ee90 !important;
+            font-weight: bold;
+        }
+
+        .upcoming td {
+            color: #155724;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Hearing_Schedule</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin_dashboard">Dashboard</a><br><br>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>Case Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Judge</th>
+            <th>Court Room</th>
+            <th>Remarks</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for h in hearings %}
+        <tr class="{% if h.is_upcoming %}upcoming{% endif %}">
+            <td><strong>{{ h.case_title }}</strong></td>
+            <td>{{ h.hearing_date }}</td>
+            <td>{{ h.hearing_time }}</td>
+            <td>{{ h.judge_name }}</td>
+            <td>{{ h.court_room }}</td>
+            <td>{{ h.remarks }}</td>
+            <td>
+                <a class="check-link" href="{{ url_for('hearing.update_hearing', hearing_id=h._id) }}">Update</a>
+                <a class="check-link"
+                    href="{{ url_for('hearing.delete_hearing', hearing_id=h._id, case_id=h.case_id) }}"
+                    onclick="return confirm('Delete this hearing?');">Delete</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" style="text-align:center;">No hearings scheduled</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

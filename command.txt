@@ -1,0 +1,7 @@
+python -m pip install flask-bcrypt
+
+
+python -m pip install pymongo
+
+
+python -m pip install xhtml2pdf

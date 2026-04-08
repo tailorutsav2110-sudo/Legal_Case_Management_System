@@ -1,0 +1,125 @@
+Life Cycle:-
+-> 1. Pre-Case / Initiation
+Issue arises (dispute, crime, breach of contract, etc.)
+Investigation (by police, regulators, or lawyers)
+Legal advice sought
+Demand notice / complaint may be sent (civil cases)
+
+-> 2. Filing the Case
+Plaintiff/Prosecution files:
+Civil: Complaint / Plaint
+Criminal: Charge sheet / Information / Indictment
+Case is registered in court
+Summons or warrant issued to the defendant/accused
+
+-> 3. Pleadings / Responses
+Defendant responds:
+Written statement / Answer
+Motion to dismiss (if applicable)
+Court identifies issues in dispute
+
+-> 4. Pre-Trial Stage
+Discovery / Evidence exchange
+Interrogations, depositions, affidavits
+Interim applications (bail, injunctions, stay orders)
+Settlement / mediation attempts (mainly civil cases)
+
+-> 5. Trial
+Opening arguments
+Examination & cross-examination of witnesses
+Presentation of evidence
+Final arguments
+
+-> 6. Judgment / Verdict
+Judge or jury delivers decision
+Determines:
+Liability or guilt
+Compensation or punishment
+
+-> 7. Post-Judgment Stage
+Sentencing (criminal cases)
+Execution of decree (civil cases)
+Compliance or enforcement
+
+-> 8. Appeal / Review (Optional)
+Aggrieved party may file:
+Appeal
+Revision
+Review
+
+Higher court may:
+Uphold
+Modify
+Reverse the decision
+
+-> 9. Closure
+Case fully resolved
+Records archived
+Rights and obligations settled
+	
+******************************************************
+
+1. Judgment by the Lower Court
+
+The lower court delivers its final order/judgment.
+The losing party decides whether there are legal grounds to appeal (error of law, procedure, jurisdiction, etc.).
+
+2. Decision to Appeal & Legal Grounds
+
+The appellant (person appealing) identifies:
+Errors of law (most common)
+Procedural irregularities
+Misinterpretation of evidence (limited in many systems)
+Appeals are not a full retrial in most cases.
+
+3. Filing Notice of Appeal
+
+A Notice of Appeal / Petition of Appeal is filed in:
+The lower court or
+The appellate court (depends on jurisdiction)
+Must be filed within a strict time limit (e.g., 30–90 days).
+Court fees are paid.
+
+4. Preparation of the Record
+
+The lower court sends the case record to the higher court:
+Pleadings
+Evidence
+Transcripts
+Judgment/order
+No new evidence is usually allowed.
+
+5. Submission of Written Arguments
+
+Appellant’s brief: explains why the lower court was wrong.
+Respondent’s reply: defends the lower court’s decision.
+Sometimes a rejoinder is allowed.
+
+6. Admission / Preliminary Hearing (if applicable)
+
+The higher court may:
+Admit the appeal
+Dismiss it at the threshold
+Limit the issues to be heard
+Common in constitutional or supreme courts.
+
+7. Oral Arguments
+
+Lawyers present arguments before judges.
+Judges may ask questions.
+Focus is mainly on law, not facts.
+
+8. Judgment by the Higher Court
+
+The appellate court may:
+✅ Uphold the lower court’s decision
+🔁 Modify the decision
+❌ Set aside the judgment
+🔄 Remand the case back to the lower court
+
+9. Further Appeal (Optional)
+
+If permitted, a party may:
+Appeal to an even higher court
+File a review or revision
+File a special leave / discretionary appeal

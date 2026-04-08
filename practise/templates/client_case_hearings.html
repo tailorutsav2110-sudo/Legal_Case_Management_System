@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client_case_hearings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>Hearings</strong>
+        <div class="nav-right">
+            <a href="/client_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Judge</th>
+            <th>Court Room</th>
+            <th>Remarks</th>
+        </tr>
+
+        {% if hearings %}
+            {% for hearing in hearings %}
+            <tr>
+                <td>{{ hearing.hearing_date }}</td>
+                <td>{{ hearing.hearing_time }}</td>
+                <td>{{ hearing.judge_name }}</td>
+                <td>{{ hearing.court_room }}</td>
+                <td>{{ hearing.remarks }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="5">No hearings found.</td>
+            </tr>
+        {% endif %}
+    </table>
+
+</body>
+</html>

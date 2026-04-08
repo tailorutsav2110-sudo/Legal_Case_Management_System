@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>admin_profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <strong>Admin Profile</strong>
+    <div class="nav-right">
+        {% if session['user_id'] == admin['_id']|string %}
+        <a href="{{ url_for('admin.update_admin_profile', id=admin['_id']) }}" class="btn-update">
+            ✏️ Update Profile
+        </a>
+        {% endif %}
+        <a href="/admin_dashboard">Dashboard</a>
+    </div>
+</div>
+
+<div class="sliding-title">
+    <span>Legal Case Management System</span>
+</div>
+
+<div class="case-details">
+    <h2>{{ admin.name }}</h2>
+    <p><strong>Email:</strong> {{ admin.email }}</p>
+    <p><strong>Phone:</strong> {{ admin.phone or 'Not provided' }}</p>
+</div>
+
+</body>
+</html>

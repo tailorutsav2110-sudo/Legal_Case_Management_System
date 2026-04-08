@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit_case</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+    
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Edit Case</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/cases">Back to Case Details</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="post">
+        Title: <input type="text" name="title" value="{{ case.title }}" required><br><br>
+        Description: <br>
+        <textarea name="description" rows="4" cols="50" required>{{ case.description }}</textarea><br><br>
+        Status:
+        <select name="status" required>
+            <option value="Open" {% if case.status=='Open' %}selected{% endif %}>Open</option>
+            <option value="Closed" {% if case.status=='Closed' %}selected{% endif %}>Closed</option>
+            <option value="Pending" {% if case.status=='Pending' %}selected{% endif %}>Pending</option>
+        </select><br><br>
+        <button type="submit">Update Case</button>
+    </form>
+</body>
+
+</html>

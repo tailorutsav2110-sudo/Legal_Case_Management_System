@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document_view</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Case Documents</strong>
+        </div>
+        {% if session.role == 'admin' %}
+            <a href="/admin_dashboard">Dashboard</a>
+
+            {% elif session.role == 'lawyer' %}
+            <a href="/dashboard">Dashboard</a>
+
+            {% elif session.role == 'staff' %}
+            <a href="/staff_dashboard">Dashboard</a>
+
+            {% elif session.role == 'client' %}
+            <a href="/client_dashboard">Dashboard</a>
+            {% endif %}
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="table-container">
+        {% if role in ["admin", "lawyer"] %}
+        <br><a class="btn" href="/request/{{ case_id }}">+ Request New Document</a>
+        <br><br>
+        {% endif %}
+
+        <table>
+            <tr>
+                <th>Document Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for doc in docs %}
+            <tr>
+                <td>{{ doc.doc_name }}</td>
+
+                <td>
+                    {% if doc.status == "uploaded" %}
+                    <span style="color: green; font-weight: bold;">Done</span>
+                    {% else %}
+                    <span style="color: orange; font-weight: bold;">Pending</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if role == "client" and doc.status == "requested" %}
+                    <a href="/upload/{{ doc._id }}">Upload</a>  
+                    {% elif role == "client" and doc.status == "uploaded" %}
+                    <span style="color: green;">✔ Uploaded</span>
+                    {% endif %}
+
+                    {% if role in ["admin", "lawyer"] %}
+                    {% if doc.status == "uploaded" %}
+                    <a href="{{ url_for('document.uploaded_file', filename=doc.file) }}" target="_blank">
+                        View
+                    </a>    
+
+                    {% endif %}
+                    | <a href="{{ url_for('document.delete_document', doc_id=doc._id) }}"
+                        onclick="return confirm('Delete this document request?');">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

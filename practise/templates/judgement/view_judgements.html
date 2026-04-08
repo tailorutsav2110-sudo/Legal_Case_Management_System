@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>view_judgements</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div><strong>All Judgements</strong></div>
+        <div class="nav-right">
+            {% if session.role == "admin" %}
+            <a href="/admin_dashboard">Dashboard</a>
+            {% elif session.role == "lawyer" %}
+            <a href="/dashboard">Dashboard</a>
+            {% else %}
+            <a href="/">Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <table>
+            <tr>
+                <th>Case</th>
+                <th>Judge</th>
+                <th>Date</th>
+                <th>Decision</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for j in judgements %}
+            <tr>
+                <td>{{ j.case.title if j.case else 'N/A' }}</td>
+                <td>{{ j.judge_name }}</td>
+                <td>{{ j.judgement_date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ j.decision }}</td>
+                <td>{{ j.status }}</td>
+                <td>
+                    <a href="/view_judgement/{{ j.case_id }}">View</a> |
+                    <a href="/delete_judgement/{{ j._id }}"
+                        onclick="return confirm('Are you sure you want to delete this Judgement?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>case_report_pdf</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm;
+        }
+
+        body {
+            font-family: Helvetica;
+            font-size: 10pt;
+            color: #1f2933;
+            background-color: #f8fafc;
+        }
+
+        /* HEADER */
+        .pdf-header {
+            background-color: #0f766e;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+
+        .pdf-title {
+            font-size: 18pt;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .pdf-subtitle {
+            font-size: 11pt;
+            margin-top: 4px;
+        }
+
+        /* SUMMARY BOX */
+        .pdf-summary {
+            background-color: #ccfbf1;
+            border: 1px solid #0f766e;
+            padding: 8px;
+            margin-bottom: 12px;
+        }
+
+        .pdf-summary p {
+            margin: 2px 0;
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #0f766e;
+            color: #ffffff;
+            border: 1px solid #0f766e;
+            padding: 6px;
+            font-size: 9pt;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #99f6e4;
+            padding: 6px;
+            font-size: 9pt;
+        }
+
+        .even {
+            background-color: #f0fdfa;
+        }
+
+        .odd {
+            background-color: #ffffff;
+        }
+
+        /* STATUS COLORS */
+        .status-open {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: #b45309;
+            font-weight: bold;
+        }
+
+        .status-closed {
+            color: #15803d;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pdf-header">
+        <div class="pdf-title">Case Report</div>
+        <div class="pdf-subtitle">Legal Case Management System</div>
+    </div>
+
+    <div class="pdf-summary">
+        <p>
+            Total Cases: {{ total_cases }} |
+            Open Cases: {{ open_cases }} |
+            Pending Cases: {{ pending_cases }} |
+            Closed Cases: {{ closed_cases }}
+        </p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Case Title</th>
+                <th>Client Name</th>
+                <th>Status</th>
+                <th>Assigned Lawyer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in cases %}
+            <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+                <td>{{ case.title }}</td>
+                <td>{{ case.client or 'N/A' }}</td>
+                <td class="status-{{ case.status|lower }}">
+                    {{ case.status or 'N/A' }}
+                </td>
+                <td>{{ case.lawyer_id[:5] or 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

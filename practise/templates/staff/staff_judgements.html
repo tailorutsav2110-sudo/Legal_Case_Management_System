@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>staff_judgements</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>All Judgements</strong>
+        <div class="nav-right">
+            <a href="/staff/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Case ID</th>
+                <th>Title</th>
+                <th>Judge</th>
+                <th>Date</th>
+                <th>Decision</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+
+            {% for j in judgements %}
+            <tr>
+                <td>{{ j.case_id_short }}</td>
+                <td>{{ j.case_title }}</td>
+                <td>{{ j.judge_name }}</td>
+
+                <td>
+                    {% if j.judgement_date %}
+                    {{ j.judgement_date.strftime('%d-%m-%Y') }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+
+                <td>{{ j.decision }}</td>
+                <td>{{ j.description }}</td>
+                <td>{{ j.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

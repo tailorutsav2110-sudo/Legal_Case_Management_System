@@ -1,0 +1,335 @@
+/* =========================
+   GLOBAL THEME (LAW SYSTEM)
+========================= */
+:root {
+  --primary: #4a148c;     
+  --secondary: #ab47bc;   
+  --accent: #f59e0b;
+  --light: #f8fafc;
+  --dark: #0f172a;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --border: #cbd5e1;
+}
+
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: var(--dark);
+}
+
+/* =========================
+   LOGIN / REGISTER FORM (SMALL)
+========================= */
+.auth-form {
+  width: 40%;            
+  margin: 20px auto;
+  padding: 22px;         
+  border-radius: 14px;
+}
+
+.auth-form input,
+.auth-form select {
+  padding: 10px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+.auth-form button {
+  padding: 10px 22px;
+  font-size: 15px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  padding: 14px 24px;
+  min-height: 64px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.navbar strong,
+.navbar h3 {
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+.nav-right a,
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 15px;
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  color: var(--accent);
+}
+
+/* =========================
+   SLIDING TITLE (RIGHT TO LEFT)
+========================= */
+.sliding-title {
+  width: 100%;
+  overflow: hidden;
+  background: #eef2ff;
+  padding: 6px 0;
+  margin-bottom: 4px 0 10px;
+}
+
+.sliding-title span {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 22px;
+  font-weight: 700;
+  color: #343333;
+  padding-left: 100%;
+  animation: slideRightToLeft 20s linear infinite;
+}
+
+@keyframes slideRightToLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* =========================
+   SEARCH BAR STYLING
+========================= */
+.search-container {
+  width: 70%;              
+  margin: 25px auto;
+}
+
+.search-container form {
+  display: flex;           
+  gap: 12px;
+  align-items: center;
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.search-container input {
+  flex: 1;                 
+  margin: 0;
+}
+
+.search-container button {
+  padding: 12px 28px;
+  white-space: nowrap;
+}
+
+/* =========================
+   CONTAINERS & CARDS
+========================= */
+.container {
+  width: 90%;
+  margin: 30px auto;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+/* =========================
+   FORMS
+========================= */
+form {
+  width: 60%;
+  margin: 30px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+form label {
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button,
+.btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  color: #fff;
+  transition: 0.3s;
+}
+
+button:hover,
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.btn-success {
+  background: var(--success);
+}
+
+.btn-danger {
+  background: var(--danger);
+}
+
+/* =========================
+   CASE DETAILS LAYOUT
+========================= */
+.case-details {
+  max-width: 850px;
+  margin: 30px auto;      /* left-right center */
+  padding: 30px 35px;    /* andar ka space */
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.case-details h2 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 26px;
+}
+
+.case-details p {
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   TABLES
+========================= */
+table {
+  width: 95%;
+  margin: 25px auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+th {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 14px;
+  text-align: left;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+tr:hover {
+  background: #eef2ff;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.status.Open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.Closed {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.status.Pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* =========================
+   DASHBOARD MENU
+========================= */
+.menu {
+  width: 60%;
+  margin: 40px 0 20px 20px;
+}
+
+.menu a {
+  display: block;
+  background: #fff;
+  padding: 16px;
+  margin: 15px 0;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--primary);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.menu a:hover {
+  background: var(--secondary);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+/* =========================
+   FOOTER (OPTIONAL)
+========================= */
+.footer {
+  text-align: center;
+  padding: 15px;
+  background: var(--dark);
+  color: #fff;
+  margin-top: 40px;
+}

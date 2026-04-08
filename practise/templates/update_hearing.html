@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update_hearing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Update Hearing</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/cases">Back to Cases</a> | 
+            <a href="{{ url_for('hearing.view_hearing', case_id=hearing.case_id) }}">Back to Hearings</a><br><br>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <form method="POST">
+            <table>
+                <tr>
+                    <td><label for="hearing_date">Date:</label></td>
+                    <td><input type="date" id="hearing_date" name="hearing_date" value="{{ hearing.hearing_date }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="hearing_time">Time:</label></td>
+                    <td><input type="time" id="hearing_time" name="hearing_time" value="{{ hearing.hearing_time }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="judge_name">Judge Name:</label></td>
+                    <td><input type="text" id="judge_name" name="judge_name" value="{{ hearing.judge_name }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="court_room">Court Room:</label></td>
+                    <td><input type="text" id="court_room" name="court_room" value="{{ hearing.court_room }}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="remarks">Remarks:</label></td>
+                    <td><textarea id="remarks" name="remarks">{{ hearing.remarks }}</textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">
+                        <button type="submit">Update Hearing</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+
+</html>

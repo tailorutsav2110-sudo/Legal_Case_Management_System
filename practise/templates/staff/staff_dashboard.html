@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>staff_dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>
+            <strong>Staff Dashboard</strong>
+        </div>
+
+        <div class="nav-right">
+            <div class="bell" onclick="toggleNotifications()">
+                🔔
+                {% if unread_count > 0 %}
+                <span class="badge">{{ unread_count }}</span>
+                {% endif %}
+
+                <div id="notificationBox">
+                    {% for n in notifications if n.status == "unread" %}
+                    <div class="notification-item unread">
+                        <p class="msg">{{ n.message }}</p>
+                        <a href="/mark_read/{{ n._id }}">Mark as read</a>
+                    </div>
+                    {% else %}
+                    <div class="empty">No new notifications</div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <a href="{{ url_for('staff.staff_profile', id=session['user_id']) }}" class="profile-icon">
+                🧑
+            </a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="dashboard-boxes">
+
+        <div class="box" onclick="window.location.href='/staff/users'">
+            <h3>👥 Users</h3><br><br>
+            <a href="/staff/users" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/staff/cases'">
+            <h3>📂 Cases Details</h3><br><br>
+            <a href="/staff/cases" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/staff/hearings'">
+            <h3>⚖️ Hearings</h3><br><br>
+            <a href="/staff/hearings" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/staff/documents'">
+            <h3>📄 Docs. Details</h3><br><br>
+            <a href="/staff/documents" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/staff/judgements'">
+            <h3>📜 Judgements</h3><br><br>
+            <a href="/staff/judgements" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/view_notifications'">
+            <h3>🔔 Notifications</h3><br><br>
+            <a href="/view_notifications" class="check-link">Check Here</a>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    function toggleNotifications() {
+        const box = document.getElementById("notificationBox");
+        box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("click", function (e) {
+        const bell = document.querySelector(".bell");
+        const box = document.getElementById("notificationBox");
+
+        if (!bell.contains(e.target)) {
+            box.style.display = "none";
+        }
+    });
+</script>
+
+</html>

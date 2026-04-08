@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>case_report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>case_report</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <h3>Case Summary</h3>
+
+        <p>
+            <strong>Total Cases:</strong> {{ total_cases }} |
+            <strong>Open Cases:</strong> {{ open_cases }} |
+            <strong>Pending Cases:</strong> {{ pending_cases }} |
+            <strong>Closed Cases:</strong> {{ closed_cases }}
+        </p>
+
+        <br>
+
+        <a href="/reports/cases/pdf">
+            <button>Export to PDF</button>
+        </a>
+
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Case Title</th>
+                <th>Client Name</th>
+                <th>Status</th>
+                <th>Assigned Lawyer</th>
+            </tr>
+
+            {% for case in cases %}
+            <tr>
+                <td>{{ case.title }}</td>
+                <td>{{ case.client }}</td>
+                <td>{{ case.status }}</td>
+                <td>{{ case.lawyer_id[:7] or 'N/A' }}</td>              <!--[:7] for print only 7 characters -->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

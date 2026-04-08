@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notification_send</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>
+            <strong>Send Notification</strong>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('notification.view_notifications') }}">View Notifications</a> |
+            <a href="/admin_dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <form method="POST" action="{{ url_for('notification.send_notification') }}">
+            <!-- Only admin can select role -->
+            {% if role == "admin" %}
+            <label>Select Role : </label>
+            <select id="roleSelect" required>
+                <option value="">--Select Role--</option>
+                <option value="lawyer">Lawyer</option>
+                <option value="client">Client</option>
+                <option value="staff">Staff</option>
+            </select>
+            {% endif %}
+
+            <label>Select User : </label>
+            <select name="user_id" id="userSelect" required>
+                <option value="">--Select User--</option>
+
+                {% for u in users %}
+                <option value="{{ u['_id'] }}" data-role="{{ u.get('role','') }}">
+                    {{ u.get('name', 'Unknown') }} ({{ u.get('role','') }})
+                </option>
+                {% endfor %}
+            </select>
+
+            <label>Message : </label>
+            <textarea name="message" placeholder="Enter reminder or notification..." required></textarea>
+
+            <button type="submit">Send Notification</button>
+
+        </form>
+    </div>
+</body>
+
+<script>
+    const roleSelect = document.getElementById('roleSelect');
+    const userSelect = document.getElementById('userSelect');
+
+    if (roleSelect) {
+        roleSelect.addEventListener('change', function () {
+            const role = this.value.toLowerCase();
+
+            for (let option of userSelect.options) {
+                const userRole = (option.getAttribute('data-role') || "").toLowerCase();
+
+                if (option.value === "" || userRole === role) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+
+            userSelect.value = "";
+        });
+    }
+</script>
+
+</html>

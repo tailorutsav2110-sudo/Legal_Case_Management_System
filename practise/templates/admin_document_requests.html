@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>admin_document_request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>Admin - Document Requests</strong>
+        <a href="/admin_dashboard">Dashboard</a>
+    </div>
+
+    <div class="search-container">
+        <form action="/search_document" method="get">
+            <input type="text" name="query" placeholder="Search document by Title or Client_name"
+                value="{{ request.args.query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th>Case Title</th>
+            <th>Requested Documents</th>
+            <th>Requested By</th>
+            <th>Uploaded By</th>
+            <th>Requested At</th>
+            <th>Action</th>
+        </tr>
+
+        {% for r in requests %}
+        <tr>
+            <td><strong>{{ r.case_title }}</strong></td>
+            <td>{{ r.doc_name }}</td>
+            <td>{{ r.requested_by }}</td>
+            <td>{{ r.uploaded_by }}</td>
+
+            <td>
+                {% if r.requested_at %}
+                {{ r.requested_at.strftime('%Y-%m-%d %H:%M') }}
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if r.status == "uploaded" and r.file %}
+                <a class="check-link" href="{{ url_for('document.uploaded_file', filename=r.file) }}">View File</a>
+                {% else %}
+                <span style="color: gray;">Not uploaded</span>
+                {% endif %}
+
+                <a class="check-link" href="{{ url_for('document.delete_document', doc_id=r._id) }}"
+                    onclick="return confirm('delete this request?');">
+                    Delete
+                </a>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>

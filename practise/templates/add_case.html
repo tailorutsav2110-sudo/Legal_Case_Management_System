@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add_case</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Add New Case</strong>
+        </div>
+        <div class="nav-right">
+            {% if session.role == "admin" %}
+            <a href="/admin/cases">Back to Case details</a>
+            {% else %}
+            <a href="/cases">Back to Case details</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="post" onsubmit="return validateCaseForm()">
+        <!-- Id: <input type="number" name="_id" id="id" required> -->
+        Title: <input type="text" name="title" id="title" oninput="hideError()"><br>
+        Client: <input type="text" name="client" id="client" oninput="hideError()"><br>
+        Description: <br>
+        <textarea name="description" rows="4" cols="50" id="description" oninput="hideError()"></textarea><br>
+        Status:
+        <select name="status" id="status" oninput="hideError()">
+            <option value="">--Select--</option>
+            <option value="Open">Open</option>
+            <option value="Closed">Closed</option>
+            <option value="Pending">Pending</option>
+        </select><br>
+
+        Lawyer:
+        <select name="lawyer_id" id="lawyer_id" oninput="hideError()">
+            <option value="">--Select--</option>
+            {% for lawyer in lawyers %}
+            <option value="{{ lawyer._id }}" {% if lawyer._id|string==session.user_id %} selected {% endif %}>
+                {{ lawyer.name }}
+            </option>
+            {% endfor %}
+        </select><br>
+
+        <div id="errorMsg" class="error-msg" style="display:none;"></div>
+
+        <button type="submit">Add Case</button>
+    </form>
+    <br>
+</body>
+<script>
+    function hideError() {
+        let errorDiv = document.getElementById("errorMsg");
+        if (errorDiv) errorDiv.style.display = "none";
+    }
+    function validateCaseForm() {
+        let title = document.getElementById("title").value.trim();
+        let client = document.getElementById("client").value.trim();
+        let description = document.getElementById("description").value.trim();
+        let status = document.getElementById("status").value;
+        let lawyer = document.getElementById("lawyer_id").value;
+
+        // let id = document.getElementById("id").value;
+        // if (!id || parseInt(id) <= 0) {
+        //     showError("Please enter a valid positive ID");
+        //     return false;
+        // }
+
+        let titlePattern = /^[A-Za-z0-9 ]{3,}$/;
+        if (!titlePattern.test(title)) {
+            showError("Title must be at least 3 characters (letters, numbers, spaces allowed)");
+            return false;
+        }
+
+        let clientPattern = /^[A-Za-z ]{3,}$/;
+        if (!clientPattern.test(client)) {
+            showError("Client name must be at least 3 letters (letters & spaces only)");
+            return false;
+        }
+
+        if (description.length < 10) {
+            showError("Description must be at least 10 characters");
+            return false;
+        }
+
+        if (!status) {
+            showError("Please select case status");
+            return false;
+        }
+
+        if (!lawyer) {
+            showError("Please select a lawyer");
+            return false;
+        }
+
+        return true;
+    }
+
+    function showError(msg) {
+        let errorDiv = document.getElementById("errorMsg");
+        errorDiv.innerText = msg;
+        errorDiv.style.display = "block";
+    }
+</script>
+
+</html>

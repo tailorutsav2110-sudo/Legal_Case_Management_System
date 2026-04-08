@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document_upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Upload Document</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/view/{{ doc.case_id }}">Back</a> |
+            <a href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data">
+            <label>Requested Document</label>
+            <input type="text" value="{{ doc.doc_name }}" disabled>
+
+            <label>Select File</label>
+            <input type="file" name="file" required>
+
+            <button type="submit">Upload Document</button>
+        </form>
+    </div>
+</body>
+</html>

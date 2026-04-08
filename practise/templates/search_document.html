@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search_documents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>
+            <strong>Document Search</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin/document_requests">Back to All Documents</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    {% if error %}
+    <div class="error-msg" id="errorMsg">{{ error }}</div>
+    {% endif %}
+
+    {% if documents %}
+    <table>
+        <thead>
+            <tr>
+                <th>Case Title</th>
+                <th>Document Name</th>
+                <th>Requested By</th>
+                <th>Uploaded By</th>
+                <th>Status</th>
+                <th>File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documents %}
+            <tr>
+                <td>{{ doc.case_title }}</td>
+                <td>{{ doc.doc_name }}</td>
+                <td>{{ doc.requested_by }}</td>
+                <td>{{ doc.uploaded_by }}</td>
+                <td>{{ doc.status }}</td>
+                <td>
+                    {% if doc.file %}
+                    <a href="{{ url_for('document.uploaded_file', filename=doc.file) }}" target="_blank">
+                        View File
+                    </a>
+                    {% else %}
+                    <span style="color: gray;">Not uploaded</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% elif not error %}
+    <p style="text-align:center;">No documents found.</p>
+    {% endif %}
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>admin_dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>Admin Dashboard</strong>
+        <div class="nav-right">
+
+            <div class="bell" onclick="toggleNotifications()" title="notification">
+                🔔
+                {% if unread_count > 0 %}
+                <span class="badge">{{ unread_count }}</span>
+                {% endif %}
+                <div id="notificationBox">
+                    {% if notifications %}
+                    {% for n in notifications %}
+                    <div class="notification-item {% if n['status'] == 'unread' %}unread{% endif %}">
+                        <div class="msg">{{ n['message'] }}</div>
+                        {% if n['status'] == 'unread' %}
+                        <a class="mark" href="/mark_read/{{ n['_id'] }}">Mark as read</a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="empty">No notifications</div>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="{{ url_for('admin.admin_profile', id=session['user_id']) }}" class="profile-icon" title="Profile">
+                🧑</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="dashboard-boxes">
+        <div class="box" onclick="window.location.href='/admin/users'">
+            <h3>👤Users Details</h3>
+            <br><br>
+            <a href="/admin/users" class="check-link">Check Here</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/admin/cases'">
+            <h3>📂Cases Details</h3>
+            <br><br>
+            <a href="/admin/cases" class="check-link">Check Here</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/admin/hearings'">
+            <h3>⚖️Hearings Details</h3>
+            <br><br>
+            <a href="/admin/hearings" class="check-link">Check Here</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/admin/document_requests'">
+            <h3>📄Docs. details</h3>
+            <br><br>
+            <a href="/admin/document_requests" class="check-link">Check Here</a>
+        </div>
+
+        <div class="box" onclick="window.location.href='/view_notifications'">
+            <h3>🔔 Notifications</h3>
+            <br><br>
+            <a href="/view_notifications" class="check-link">View & Send</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/judgement_cases'">
+            <h3>📜 Judgements</h3>
+            <br><br>
+            <a href="/judgement_cases" class="check-link">Manage Judgements</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/reports/cases'">
+            <h3>📊 Case Report</h3>
+            <br><br>
+            <a href="/reports/cases" class="check-link">Open Report</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/reports/hearings'">
+            <h3>📊 Hearing Report</h3>
+            <br><br>
+            <a href="/reports/hearings" class="check-link">Open Report</a>
+        </div><br><br>
+
+        <div class="box" onclick="window.location.href='/reports/documents'">
+            <h3>📊 Docs. Report</h3>
+            <br><br>
+            <a href="/reports/documents" class="check-link">Open Report</a>
+        </div><br><br>
+
+    </div>
+</body>
+
+<script>
+    function toggleNotifications() {
+        const box = document.getElementById("notificationBox");
+        box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("click", function (e) {
+        const bell = document.querySelector(".bell");
+        const box = document.getElementById("notificationBox");
+
+        if (!bell.contains(e.target)) {
+            box.style.display = "none";
+        }
+    });
+</script>
+
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div id="sidebar" class="sidebar">
+        <div>
+            <a href="/admin_dashboard">🏠 Dashboard</a>
+            <a href="/admin/users">👤 Users</a>
+            <a href="/admin/cases">📂 Cases</a>
+            <a href="/admin/hearings">⚖️ Hearings</a>
+            <a href="/admin/document_requests">📄 Documents</a>
+            <a href="/reports/cases">📊 Case Reports</a>
+            <a href="/reports/hearings">📊 Hearing Reports</a>
+            <a href="/reports/documents">📊 Docs Reports</a>
+        </div>
+        <a href="/logout" class="logout-btn">🚪 Logout</a>
+    </div>
+
+    <div id="wrapper" class="wrapper">
+
+        <div class="navbar">
+            <div style="display:flex; align-items:center;">
+                <span class="hamburger" onclick="toggleSidebar()">☰</span>
+                <strong>Admin Dashboard</strong>
+            </div>
+
+            <div class="nav-right">
+                <div class="bell" onclick="toggleNotifications()">
+                    🔔
+                    {% if unread_count > 0 %}
+                    <span class="badge">{{ unread_count }}</span>
+                    {% endif %}
+                    <div id="notificationBox">
+                        {% if notifications %}
+                        {% for n in notifications %}
+                        <div class="notification-item {% if n['status'] == 'unread' %}unread{% endif %}">
+                            <div class="msg">{{ n['message'] }}</div>
+                            {% if n['status'] == 'unread' %}
+                            <a class="mark" href="/mark_read/{{ n['_id'] }}">Mark as read</a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="empty">No notifications</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <a href="{{ url_for('admin.admin_profile', id=session['user_id']) }}" class="profile-icon"
+                    title="My Profile">🧑‍💼</a>
+            </div>
+        </div>
+
+        <div class="sliding-title">
+            <span>Legal Case Management System</span>
+        </div>
+
+        <div class="main-content">
+            <h1>Welcome Admin</h1>
+            <p>Legal Case Management System</p>
+        </div>
+
+    </div> 
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("open");
+            document.getElementById("wrapper").classList.toggle("shift");
+        }
+
+        function toggleNotifications() {
+            const box = document.getElementById("notificationBox");
+            box.style.display = box.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function (e) {
+            const bell = document.querySelector(".bell");
+            const box = document.getElementById("notificationBox");
+            if (!bell.contains(e.target)) {
+                box.style.display = "none";
+            }
+        });
+
+        const searchInput = document.getElementById("searchInput");
+        const errorDiv = document.getElementById("errorMsg");
+        if (searchInput) {
+            searchInput.addEventListener("input", () => {
+                if (errorDiv) {
+                    errorDiv.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html> -->

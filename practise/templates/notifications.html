@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notifications</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Your Notifications</strong>
+        </div>
+        <div class="nav-right">
+
+            {% if session.role in ['admin', 'lawyer'] %}
+            <a href="{{ url_for('notification.send_notification') }}">Send Notification</a> |
+            {% endif %}
+
+            {% if session.role == 'admin' %}
+            <a href="/admin_dashboard">Dashboard</a>
+
+            {% elif session.role == 'lawyer' %}
+            <a href="/dashboard">Dashboard</a>
+
+            {% elif session.role == 'staff' %}
+            <a href="staff/dashboard">Dashboard</a>
+
+            {% elif session.role == 'client' %}
+            <a href="/client_dashboard">Dashboard</a>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="form-container">
+        <table>
+            <tr>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for n in notifications %}
+            <tr>
+                <td>{{ n['message'] }}</td>
+                <td>{{ n['status'] }}</td>
+                <td>
+                    {% if n['status'] == "unread" %}
+                    <a href="/mark_read/{{ n['_id'] }}">Mark Read</a>
+                    {% else %}
+                    ✔ Read |
+                    {% endif %}
+
+                    <a href="/delete_notification/{{ n['_id'] }}"
+                        onclick="return confirm('Are you sure you want to delete this notification?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

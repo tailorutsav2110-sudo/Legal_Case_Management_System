@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>view_judgement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div><strong>Judgement Details</strong></div>
+        <div class="nav-right">
+
+            {% if session.role == "admin" %}
+            <a href="/judgement_cases">Back</a> |
+            <a href="/admin_dashboard">Dashboard</a>
+
+            {% elif session.role == "lawyer" %}
+            <a href="/lawyer_judgement_cases">Back</a>
+
+            {% else %}
+            <a href="/client_dashboard">Back</a> |
+            <a href="/client_dashboard">Dashboard</a>
+            {% endif %}
+
+        </div>
+    </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="case-details">
+
+        <p><strong>Case:</strong> {{ case.title }}</p>
+        <p><strong>Judge:</strong> {{ judgement.judge_name }}</p>
+        <p><strong>Date:</strong> {{ judgement.judgement_date.strftime('%Y-%m-%d') }}</p>
+        <p><strong>Decision:</strong> {{ judgement.decision }}</p>
+        <p><strong>Status:</strong> {{ judgement.status }}</p>
+
+        <p><strong>Description:</strong></p>
+        <p>{{ judgement.description }}</p>
+
+    </div>
+
+</body>
+
+</html>

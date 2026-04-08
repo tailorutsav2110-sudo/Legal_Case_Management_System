@@ -1,0 +1,370 @@
+from flask import Flask,render_template,request,redirect,session,url_for
+from pymongo import MongoClient
+from flask_bcrypt import Bcrypt
+from bson.objectid import ObjectId
+
+app = Flask(__name__)
+app.secret_key = "secret123"
+
+bcrypt = Bcrypt(app)
+
+# =======================MongoDB Connection=======================
+try:
+    client = MongoClient("mongodb://localhost:27017/")
+    db = client["Flaskdb"]
+    print("MongoDB connected..")
+except:
+    print("MongoDB not connect..")
+users = db["users"]
+cases = db["cases"]
+
+# =======================1. login detalis=======================
+@app.route("/", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        role = request.form["role"]
+
+        user = users.find_one({"email": email , "role": role})
+        if user and bcrypt.check_password_hash(user["password"],password):
+            session["user_id"] = str(user["_id"])
+            session["user"] = user["name"]
+            session["role"] = user["role"]
+
+        if user["role"] == "admin":
+            return redirect("/admin_dashboard")
+        elif user["role"] == "lawyer":
+            return redirect("/dashboard")
+        else:
+            return redirect("/client_dashboard")
+        
+    return render_template("login.html")
+
+# =======================2. register details=======================
+@app.route("/register", methods = ["GET","POST"])
+def register():
+    if request.method == "POST":
+        
+        name = request.form["name"]
+        email = request.form["email"]
+        role = request.form["role"]
+        password = bcrypt.generate_password_hash(request.form["password"])
+
+        users.insert_one({"name": name , "email": email , "password": password , "role": role})
+        return redirect("/")
+    
+    return render_template("register.html")
+
+# =======================3. dashboard details=======================
+@app.route("/dashboard")
+def dashboard():
+    if "user" in session:
+        return render_template("dashboard.html")
+    return redirect("/")
+
+# =======================4. View cases=======================
+@app.route("/cases")
+def view_cases():
+    if "user" not in session:
+        return redirect("/")
+    
+    if session["role"] == "lawyer":
+        lawyer_cases = list(cases.find({"lawyer_id": session["user_id"]}))
+    else:
+        lawyer_cases = list(cases.find())
+
+    for case in lawyer_cases:
+        case["_id"] = str(case["_id"])
+        case["lawyer_id"] = str(case["lawyer_id"])
+
+    lawyers = list(users.find({"role": "lawyer"}))
+    for lawyer in lawyers:
+        lawyer["_id"] = str(lawyer["_id"])
+    
+    return render_template("cases.html",cases=lawyer_cases,lawyers=lawyers)
+
+# =======================5. Add cases(admin,lawyer)=======================
+@app.route("/add_case",methods=["GET","POST"])
+def add_case():
+    if "user" not in session:
+        return redirect("/")
+    
+    if session["role"] not in ["lawyer","admin"]:
+        return "Access denied"
+    
+    lawyers = list(users.find({"role": "lawyer"}))
+    
+    if request.method == "POST":
+        cases.insert_one({
+            "title": request.form["title"],
+            "client": request.form["client"],
+            "description": request.form["description"],
+            "status": request.form["status"],
+            "lawyer_id": request.form["lawyer_id"]
+        })
+
+        if session["role"] == "admin":
+            return redirect("/admin/cases")
+        else:
+            return redirect("/cases")
+    
+    return render_template("add_case.html",lawyers=lawyers)
+
+# =======================6. Edit user=======================
+@app.route("/edit_user/<id>", methods=["GET", "POST"])
+def edit_user(id):
+    if "user" not in session:
+        return redirect("/")
+
+    user_to_edit = users.find_one({"_id": ObjectId(id)})
+    if not user_to_edit:
+        return "User not found"
+
+    if session["role"] != "admin":
+        return "Access denied"
+
+    if request.method == "POST":
+        users.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "username": request.form["username"],
+                "email": request.form["email"],
+                "role": request.form["role"]
+            }}
+        )
+        return redirect("/admin/users")
+
+    return render_template("edit_user.html", user=user_to_edit)
+
+# =======================7. Edit cases=======================
+@app.route("/edit_case/<id>", methods=["GET", "POST"])
+def edit_case(id):
+    if "user" not in session:
+        return redirect("/")
+
+    case = cases.find_one({"_id": ObjectId(id)})
+    if not case:
+        return "Case not found"
+
+    if session["role"] == "lawyer":
+        if case["lawyer_id"] != session["user_id"]:
+            return "Access denied"
+    elif session["role"] != "admin":
+        return "Access denied"
+
+    if request.method == "POST":
+        cases.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "title": request.form["title"],
+                "description": request.form["description"],
+                "status": request.form["status"]
+            }}
+        )
+
+        if session["role"] == "admin":
+            return redirect("/admin/cases")
+        else:
+            return redirect("/cases")
+
+    return render_template("edit_case.html", case=case)
+
+# =======================8. delete cases=======================
+@app.route("/delete_case/<id>")
+def delete_case(id):
+    if "user" not in session:
+        return redirect("/")
+    
+    case = cases.find_one({"_id": ObjectId(id)})
+    if session["role"] == "lawyer" and case["lawyer_id"] != session["user_id"]:
+        return "Access Denied"
+    
+    cases.delete_one({"_id": ObjectId(id)})
+    return redirect("/cases")
+
+# =======================9. Client Dashboard=======================
+@app.route("/client_dashboard")
+def client_dashboard():
+    if "user" not in session or session["role"] != "client":
+        return redirect("/")
+    
+    client_cases = list(cases.find({"client": session["user"]}))
+    for case in client_cases:
+        case["_id"] = str(case["_id"])
+
+        lawyer_id = case.get("lawyer_id")
+        try:
+            if isinstance(lawyer_id, str):
+                lawyer = users.find_one({"_id": ObjectId(lawyer_id)})    
+            else:
+                lawyer = users.find_one({"_id": lawyer_id})
+        except:
+            lawyer = None
+
+        case["lawyer_name"] = lawyer["name"] if lawyer else "Not Assigned"
+    
+    return render_template("client_dashboard.html",cases = client_cases)
+
+# =======================10. client (view case)=======================
+@app.route("/client_case/<id>")
+def client_case(id):
+    if "user" not in session or session["role"] != "client":
+        return redirect("/")
+    
+    case  = cases.find_one({"_id": ObjectId(id), "client": session["user"]})
+    if not case:
+        return "access denied"
+    
+    lawyer_id = case.get("lawyer_id")
+    try:
+        if isinstance(lawyer_id, str):
+            lawyer = users.find_one({"_id": ObjectId(lawyer_id)})
+        else:
+            lawyer = users.find_one({"_id": lawyer_id})
+    except:
+        lawyer = None
+
+    case["lawyer_name"] = lawyer["name"] if lawyer else "Not Assigned"
+    
+    return render_template("client_case.html",case = case)
+
+# =======================11. admin dashboard=======================
+@app.route("/admin_dashboard")
+def admin_dashboard():
+     if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+     
+     total_users = users.count_documents({})
+     total_cases = cases.count_documents({})
+
+     return render_template("admin_dashboard.html",total_users = total_users,total_cases = total_cases)
+
+# =======================12. admin(view all users)=======================
+@app.route("/admin/users")
+def admin_users():
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+    
+    all_users = list(users.find({},{"password": 0}))
+    for u in all_users:
+        u["_id"] = str(u["_id"])
+    return render_template("admin_users.html",users=all_users)
+
+# =======================13. admin(view all cases)=======================
+@app.route("/admin/cases")
+def admin_cases():
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+    
+    all_cases = list(cases.find())
+    for case in all_cases:
+        case["_id"] = str(case["_id"])
+        case["lawyer_id"] = str(case["lawyer_id"])
+
+    lawyers = list(users.find({"role": "lawyer"}))
+    for lawyer in lawyers:
+        lawyer["_id"] = str(lawyer["_id"])
+    
+    return render_template("admin_cases.html",cases=all_cases,lawyers=lawyers)
+
+# =======================14. admin(delete any user)=======================
+@app.route("/admin/user/<id>")
+def admin_delete_user(id):
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+    
+    users.delete_one({"_id": ObjectId(id)})
+    return redirect("/admin/users")
+
+# =======================15. admin(delete any cases)=======================
+@app.route("/admin/delete_cases/<id>")
+def admin_delete_case(id):
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    cases.delete_one({"_id": ObjectId(id)})
+    return redirect("/admin/cases")
+
+# =======================16. admin(edit cases)=======================
+@app.route("/admin/edit_case/<id>", methods=["GET", "POST"])
+def admin_edit_case(id):
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    case = cases.find_one({"_id": ObjectId(id)})
+
+    if request.method == "POST":
+        cases.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "title": request.form["title"],
+                #"client": request.form["client"],
+                "description": request.form["description"],
+                "status": request.form["status"],
+                #"lawyer": request.form["lawyer"]
+            }}
+        )
+        return redirect("/admin/cases")
+
+    return render_template("edit_case.html", case=case)
+
+# =======================17. admin(edit users)=======================
+@app.route("/admin/edit_user/<id>", methods=["GET", "POST"])
+def admin_edit_user(id):
+    if "user" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    user = users.find_one({"_id": ObjectId(id)})
+
+    if request.method == "POST":
+        users.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {
+                "name": request.form["name"],
+                "email": request.form["email"],
+                "role": request.form["role"]
+            }}
+        )
+        return redirect("/admin/users")
+
+    return render_template("edit_user.html", user=user)
+
+# =======================18. search case=======================
+@app.route("/search_case")
+def search_case():
+    if "user" not in session or session["role"] not in ["admin","lawyer"]:
+        return redirect("/")
+    
+    title_query = request.args.get("title")
+    if not title_query:
+        if session["role"] == "admin":
+            return redirect("/admin/cases")
+        else:
+            return redirect("/cases")
+        
+    query = {
+        "title": {"$regex": title_query, "$options": "i"}
+    }
+
+    if session["role"] == "lawyer":
+        query["lawyer_id"] = session["user_id"]
+
+    case = cases.find_one(query)
+
+    if not case:
+        return "Case not found or access denied"
+    
+    lawyer = users.find_one({"_id": ObjectId(case["lawyer_id"])})
+    case["lawyer_name"] = lawyer["name"] if lawyer else "Not Assigned"
+    
+    return render_template("search_case.html",case=case)
+
+# =======================19. logout details=======================
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
+if __name__ == "__main__":
+    app.run(debug=True)                                                                                                                                          isme mene

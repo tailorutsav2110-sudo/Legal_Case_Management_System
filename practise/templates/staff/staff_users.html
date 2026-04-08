@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>staff_users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong></strong>
+        <div class="nav-right">
+            <a href="/staff/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone no.</th>
+                <th>Role</th>
+            </tr>
+
+            {% for u in users %}
+            <tr>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.phone }}</td>
+                <td>{{ u.role }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

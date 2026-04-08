@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>lawyer_judgement_cases</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>My Judgement Cases</strong>
+        <div>
+            <a href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        {% for case in cases %}
+        <tr>
+            <td>{{ case.title }}</td>
+            <td>{{ case.client }}</td>
+            <td>{{ case.description }}</td>
+            <td>{{ case.status }}</td>
+
+            <td>
+                {% if case.has_judgement %}
+                    <span style="color: green;">✔ Judgement Added</span> |
+                    <a href="/view_judgement/{{ case._id }}">View</a>
+                {% else %}
+                    <a href="/add_judgement/{{ case._id }}">Add</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+</html>

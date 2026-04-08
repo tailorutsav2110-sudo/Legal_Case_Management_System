@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <strong>Register Page</strong>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="post" class="auth-form" onsubmit="return validateForm()">
+        
+        Name : 
+        <input type="text" name="name" id="name" placeholder="Enter Name" oninput="hideError()"><br>
+
+        Email : 
+        <input type="text" name="email" id="email" placeholder="Enter Email Id" oninput="hideError()"><br>
+
+        Password : 
+        <input type="password" name="password" id="password" placeholder="Enter Password" oninput="hideError()"><br>
+
+        Register as :
+        <select name="role" id="role" oninput="hideError()">
+            <option value="">-- Select option --</option>
+            <option value="admin">Admin</option>
+            <option value="lawyer">Lawyer</option>
+            <option value="client">Client</option>
+            <option value="staff">Staff</option>
+        </select><br>
+
+        {% if error %}
+        <div class="error-msg" id="errorMsg">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <button type="submit">Register</button>
+
+        <p style="text-align:center; margin-top:15px;">
+            Already register? <a href="/login">Login</a>
+        </p>
+        <p style="text-align:center;">
+    <a href="{{ url_for('auth.home') }}">Back to Home</a>
+</p>
+    </form>
+</body>
+
+<script>
+function hideError() {
+    let errorDiv = document.getElementById("errorMsg");
+    if (errorDiv) errorDiv.style.display = "none";
+}
+
+function validateForm() {
+    hideError();
+
+    if (!validuser()) return false;
+    if (!validemail()) return false;
+    if (!validpassword()) return false;
+    if (!validrole()) return false;
+
+    return true;
+}
+
+// ✅ Name Validation
+function validuser() {
+    let user = document.getElementById("name").value.trim();
+    let pattern = /^[A-Za-z .,_]{3,}$/;
+
+    if (!pattern.test(user)) {
+        showerror("Enter valid Name (Min 3 Letters, Alphabets Only)");
+        return false;
+    }
+    return true;
+}
+
+// ✅ Email Validation
+function validemail() {
+    let email = document.getElementById("email").value.trim();
+    let pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!pattern.test(email)) {
+        showerror("Enter Valid Email like test@gmail.com");
+        return false;
+    }
+    return true;
+}
+
+// ✅ Password Validation
+function validpassword() {
+    let password = document.getElementById("password").value;
+
+    // Min 6 chars, at least 1 letter & 1 number
+    let pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@#$%^&*!]{6,}$/;
+
+    if (!pattern.test(password)) {
+        showerror("Password must be at least 6 characters with letters & numbers");
+        return false;
+    }
+    return true;
+}
+
+// ✅ Role Validation
+function validrole() {
+    let role = document.getElementById("role").value;
+
+    if (role === "") {
+        showerror("Please select a role");
+        return false;
+    }
+    return true;
+}
+
+// ✅ Show Error
+function showerror(msg) {
+    let errorDiv = document.getElementById("errorMsg");
+
+    if (!errorDiv) {
+        errorDiv = document.createElement("div");
+        errorDiv.id = "errorMsg";
+        errorDiv.className = "error-msg";
+
+        document.querySelector(".auth-form").insertBefore(
+            errorDiv,
+            document.querySelector(".auth-form button")
+        );
+    }
+
+    errorDiv.innerText = msg;
+    errorDiv.style.display = "block";
+}
+</script>
+
+</html>

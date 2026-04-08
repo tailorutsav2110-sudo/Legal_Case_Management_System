@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search_case</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <strong>Case Details</strong>
+        </div>
+        <div class="nav-right">
+            {% if session.role == "admin" %}
+            <a href="/admin/cases">Back to Case List</a>
+            {% else %}
+            <a href="/cases">Back to Case List</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    {% if error %}
+    <div class="error-msg" id="errorMsg">{{ error }}</div>
+    {% endif %}
+
+    {% if case %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Lawyer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if case %}
+            <tr>
+                <td>{{ case.title }}</td>
+                <td>{{ case.client }}</td>
+                <td>{{ case.description }}</td>
+                <td>{{ case.status }}</td>
+                <td>{{ case.lawyer_name or 'Not Assigned' }}</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <script>
+        document.addEventListener('input', () => {
+            const errorDiv = document.getElementById("errorMsg");
+            if (errorDiv) errorDiv.style.display = "none";
+        });
+    </script>
+</body>
+
+</html>

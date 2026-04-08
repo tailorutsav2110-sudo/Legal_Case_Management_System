@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>staff_cases</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <strong>All Cases</strong>
+        <div class="nav-right">
+            <a href="{{ url_for('staff.dashboard') }}">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Lawyer</th>
+            </tr>
+
+            {% for c in cases %}
+            <tr>
+                <td>{{ c.title }}</td>
+                <td>{{ c.client }}</td>
+                <td>{{ c.description }}</td>
+                <td>{{ c.status }}</td>
+                <td>{{ c.lawyer_name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

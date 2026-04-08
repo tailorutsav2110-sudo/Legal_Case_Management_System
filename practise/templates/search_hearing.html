@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search_hearings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>
+            <strong>Hearing Details</strong>
+        </div>
+        <div class="nav-right">
+            <a href="/admin/hearings">Back to All Hearings</a>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    {% if error %}
+    <div class="error-msg" id="errorMsg">{{ error }}</div>
+    {% endif %}
+
+    {% if hearings %}
+    <table>
+        <thead>
+            <tr>
+                <th>Case Title</th>
+                <th>Lawyer</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Judge</th>
+                <th>Court Room</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in hearings %}
+            <tr>
+                <td>{{ h.case_title }}</td>
+                <td>{{ h.lawyer_name }}</td>
+                <td>{{ h.hearing_date }}</td>
+                <td>{{ h.hearing_time }}</td>
+                <td>{{ h.judge_name }}</td>
+                <td>{{ h.court_room }}</td>
+                <td>{{ h.remarks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% elif not error %}
+    <p style="text-align:center;">No hearings found.</p>
+    {% endif %}
+
+</body>
+
+</html>

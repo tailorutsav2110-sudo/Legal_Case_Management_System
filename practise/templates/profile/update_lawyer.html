@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update_lawyer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='common_style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <strong>Update Profile</strong>
+        <div class="nav-right">
+            <a href="/dashboard">Dashboard</a><br><br>
+        </div>
+    </div>
+
+    <div class="sliding-title">
+        <span>Legal Case Management System</span>
+    </div>
+
+    <form method="POST" action="{{ url_for('cases.update_lawyer_profile', id=lawyer['_id']) }}" class="auth-form">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ lawyer.name }}" required><br>
+
+        <label>Phone:</label>
+        <input type="text" name="phone" value="{{ lawyer.phone or '' }}"><br>
+
+        <label>Experience:</label>
+        <input type="text" name="experience" value="{{ lawyer.experience or '' }}"><br>
+
+        <label>Specialization:</label>
+        <input type="text" name="specialization" value="{{ lawyer.specialization or '' }}"><br>
+
+        <label>Bio:</label>
+        <textarea name="bio">{{ lawyer.bio or '' }}</textarea><br>
+
+        <button type="submit">💾 Save Changes</button>
+    </form>
+</body>
+
+</html>
