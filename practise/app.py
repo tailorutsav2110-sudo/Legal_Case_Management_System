@@ -1,4 +1,3 @@
-#check Connections
 from flask import Flask 
 from extensions import bcrypt
 from routes.auth import auth_bp
@@ -12,8 +11,6 @@ from routes.judgement import judgement_bp
 from routes.report import report_bp
 from routes.staff import staff_bp
 import config
-
-hii manan
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
