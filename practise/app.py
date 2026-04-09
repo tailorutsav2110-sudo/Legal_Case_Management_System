@@ -1,3 +1,4 @@
+#check Connections
 from flask import Flask 
 from extensions import bcrypt
 from routes.auth import auth_bp
