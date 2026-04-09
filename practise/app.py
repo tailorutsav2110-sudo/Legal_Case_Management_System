@@ -13,6 +13,8 @@ from routes.report import report_bp
 from routes.staff import staff_bp
 import config
 
+hii manan
+
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
 
